@@ -1,0 +1,7 @@
+# Toolchain pins for activestorage-multi_node_disk: the development Ruby
+# (.ruby-version); the gem itself supports Ruby 3.3 and newer (gemspec floor).
+[tools]
+ruby = '{{ read_file(path=".ruby-version") | trim }}'
+
+[settings]
+experimental = true

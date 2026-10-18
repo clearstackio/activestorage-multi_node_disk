@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Installs the pinned Ruby (mise) and the bundle, then runs the checks once.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+if command -v mise >/dev/null 2>&1; then
+  mise install
+  run=(mise exec --)
+else
+  run=()
+fi
+
+"${run[@]}" bundle install
+"${run[@]}" bundle exec rake

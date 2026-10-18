@@ -1,0 +1,5 @@
+# StandardRB targets the oldest Ruby the gem supports (gemspec
+# required_ruby_version), not .ruby-version. Raise both together.
+ruby_version: 3.3
+ignore:
+  - "spec/dummy/**/*"

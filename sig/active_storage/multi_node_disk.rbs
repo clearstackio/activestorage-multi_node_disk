@@ -1,0 +1,98 @@
+# Public API of activestorage-multi_node_disk. Rails types are untyped here
+# (no Rails signatures are loaded); `rake rbs` checks the syntax.
+module ActiveStorage
+  module MultiNodeDisk
+    VERSION: String
+    NODE_HEADER: String
+    SERVICE_ENV_KEY: String
+
+    def self.config: () -> Configuration
+    def self.configure: () { (Configuration) -> void } -> void
+    def self.finalize!: (?Hash[untyped, untyped] services) -> Configuration
+    def self.mount_path: () -> String
+    def self.with_config: (**untyped overrides) { () -> untyped } -> untyped
+    def self.service: () -> untyped
+    def self.service_configurations: () -> Hash[untyped, untyped]
+    def self.credentials_token: () -> String?
+    def self.node_addresses: () -> NodeAddresses
+    def self.node_addresses=: (NodeAddresses) -> NodeAddresses
+    def self.with_requester: (Hash[untyped, untyped]? requester) { () -> untyped } -> untyped
+    def self.current_requester: () -> Hash[untyped, untyped]?
+    def self.instrument: (Symbol event, ?Hash[Symbol, untyped] payload) ?{ () -> untyped } -> untyped
+
+    class Configuration
+      CALLABLES: Array[Symbol]
+      VALUES: Array[Symbol]
+      TIMEOUTS: Array[Symbol]
+      OPTIONS: Array[Symbol]
+      AUTH_MODES: Array[Symbol]
+      DELETE_MODES: Array[Symbol]
+
+      attr_accessor current_node: String | ^() -> String
+      attr_accessor nodes: Array[String] | ^() -> Array[String] | nil
+      attr_accessor url_for: ^(String node, String key) -> String
+      attr_accessor auth: Symbol | Array[Symbol]
+      attr_accessor allowed_ips: Array[String]?
+      attr_accessor token: String | ^() -> String?
+      attr_accessor token_for: String | ^(String node, untyped blob, Symbol action) -> String?
+      attr_accessor authenticate: ^(String token, untyped request) -> untyped
+      attr_accessor http_client: untyped
+      attr_accessor hop_header: String
+      attr_accessor open_timeout: Numeric
+      attr_accessor read_timeout: Numeric
+      attr_accessor audit: Symbol | ^(Hash[String, untyped]) -> void
+      attr_accessor audit_path: untyped
+      attr_accessor audit_context: (^(untyped request, Hash[Symbol, untyped] entry) -> Hash[untyped, untyped]?)?
+      attr_accessor audit_requester: (^(untyped request) -> Hash[untyped, untyped]?)?
+      attr_accessor requester_header: String
+      attr_accessor table_name_prefix: String
+      attr_accessor error_mapper: ^(Exception error) -> Exception
+      attr_accessor draw_routes: bool
+      attr_accessor delete_mode: Symbol
+      attr_accessor delete_job_queue: (String | Symbol)?
+      attr_accessor delete_job_class: (String | Class)?
+
+      def self.token?: (String? token) -> bool
+      def self.auth_modes: (untyped auth) -> Array[Symbol]
+      def self.ip_list: (Array[String]? list) -> Array[untyped]?
+      def self.seconds?: (untyped value) -> bool
+      def resolve: (Symbol option, *untyped args) -> untyped
+      def validate!: () -> self
+      def merge: (**untyped overrides) -> Configuration
+      def delete_job: () -> Class
+    end
+
+    class ConfigurationError < StandardError
+    end
+
+    module FileError
+      attr_reader nodes: Array[String]
+      attr_reader key: String?
+      attr_reader filename: String?
+      def node: () -> String
+    end
+
+    class Response < Struct[untyped]
+      attr_accessor status: Integer
+      attr_accessor body: String
+      attr_accessor headers: Hash[String, untyped]
+      def header: (String name) -> String?
+    end
+
+    class NetHttpClient
+      def call: (Symbol method, String url, headers: Hash[String, String], node: String, open_timeout: Numeric, read_timeout: Numeric) -> Response
+    end
+
+    class NodeAddresses
+      TTL: Integer
+      def initialize: (?resolver: untyped, ?clock: ^() -> Float) -> void
+      def for: (Array[String] nodes) -> Array[untyped]
+    end
+
+    module FanOut
+      MAX_THREADS: Integer
+      JOIN_SECONDS: Integer
+      def self.run: (Hash[String, ^() -> untyped] calls, deadline: Numeric) { (String, untyped) -> bool } -> Hash[String, untyped]
+    end
+  end
+end

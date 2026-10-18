@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# An IRB session inside the dummy app, with the gem loaded.
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../spec/dummy/config/environment"
+
+require "irb"
+IRB.start(__FILE__)

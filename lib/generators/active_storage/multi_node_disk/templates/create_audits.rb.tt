@@ -1,0 +1,33 @@
+# The :table audit sink (activestorage-multi_node_disk): one row per entry,
+# the whole entry in payload. Runs on PostgreSQL (jsonb), MySQL 8 (json),
+# Oracle (CLOB) and SQLite (text); the model reads it with
+# `attribute :payload, :json`. Safe to run again; reversible.
+class CreateActiveStorageMultiNodeDiskAudits < ActiveRecord::Migration<%= migration_version %>
+  TABLE = :<%= table_name %>
+  INDEX = "<%= index_name %>"
+
+  def up
+    return if table_exists?(TABLE)
+
+    create_table TABLE do |t|
+      t.column :payload, payload_type, null: false
+      t.datetime :created_at, null: false
+    end
+    add_index TABLE, :created_at, name: INDEX
+  end
+
+  def down
+    drop_table TABLE if table_exists?(TABLE)
+  end
+
+  private
+
+  # JSON where the database has a JSON type; a CLOB (text) elsewhere.
+  def payload_type
+    case connection.adapter_name
+    when /postg/i then :jsonb
+    when /mysql|trilogy/i then :json
+    else :text
+    end
+  end
+end

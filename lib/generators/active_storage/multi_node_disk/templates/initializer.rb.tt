@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+# activestorage-multi_node_disk. storage.yml names the service and its nodes:
+#
+#   local:
+#     service: MultiNodeDisk
+#     root: <%%= Rails.root.join("storage") %>
+#     nodes: [app1.internal, app2.internal]
+#
+# and `bin/rails credentials:edit` holds the nodes' shared token:
+#
+#   multi_node_disk:
+#     token: <the same random value on every node>
+ActiveStorage::MultiNodeDisk.configure do |config|
+  # Who may call this node's endpoint: :token (a Bearer token, the
+  # credentials above), :ip (the nodes' addresses), [:ip, :token], or :none
+  # (the gem's default: anyone who can reach the node).
+  config.auth = :token
+
+  # Optional; the default is shown.
+
+  # Where audit entries go: :file (tmp/multi_node_disk/audit.log), :table
+  # (run `bin/rails g active_storage:multi_node_disk:install --audit` and
+  # migrate), :none, or a callable.
+  # config.audit = :file
+end

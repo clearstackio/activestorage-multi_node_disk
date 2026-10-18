@@ -1,0 +1,9 @@
+local:
+  service: MultiNodeDisk
+  root: <%= Rails.root.join("tmp/storage/node-a") %>
+  node: node-a
+  nodes: [node-a, node-b, node-c]
+
+plain:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage/plain") %>

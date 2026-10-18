@@ -1,0 +1,31 @@
+# Publishes to rubygems.org with trusted publishing (OIDC, no API key) and a
+# Sigstore attestation, when a `v*` tag matching version.rb is pushed. The
+# rubygems.org trusted publisher names this workflow and the `rubygems`
+# environment.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ruby/setup-ruby@824c0e29fdfc7d689c191c27acc969d2d04b7dd8 # v1.331.0
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - name: Check the tag matches the version
+        run: |
+          version="$(ruby -Ilib -e 'require "active_storage/multi_node_disk/version"; print ActiveStorage::MultiNodeDisk::VERSION')"
+          test "$GITHUB_REF_NAME" = "v$version" || { echo "Tag $GITHUB_REF_NAME does not match version $version"; exit 1; }
+      - run: bundle exec rake
+      - uses: rubygems/release-gem@7f9650160c1a4e7989fdc9855807bdbd421d8b6b # v1.4.1
