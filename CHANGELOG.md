@@ -7,7 +7,9 @@ minor version may change public APIs; each entry says how.
 
 ## [Unreleased]
 
-The first release, planned as 0.1.0.
+## [0.1.0] - 2026-10-20
+
+The first release.
 
 ### Added
 
@@ -37,4 +39,5 @@ The first release, planned as 0.1.0.
 - `ActiveStorage::MultiNodeDisk::TestHelper`: fake nodes answered by the real
   endpoint in process.
 
-[Unreleased]: https://github.com/clearstackio/activestorage-multi_node_disk/commits/master
+[Unreleased]: https://github.com/clearstackio/activestorage-multi_node_disk/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/clearstackio/activestorage-multi_node_disk/releases/tag/v0.1.0
