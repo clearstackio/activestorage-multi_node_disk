@@ -37,4 +37,4 @@ The first release, planned as 0.1.0.
 - `ActiveStorage::MultiNodeDisk::TestHelper`: fake nodes answered by the real
   endpoint in process.
 
-[Unreleased]: https://github.com/clearstackio/activestorage-multi_node_disk/commits/main
+[Unreleased]: https://github.com/clearstackio/activestorage-multi_node_disk/commits/master

@@ -75,7 +75,7 @@ publisher on rubygems.org (Profile → Trusted publishers): gem
    run `bundle install` so `Gemfile.lock` follows.
 2. Move the `[Unreleased]` entries in `CHANGELOG.md` under the new version
    and date, and update the compare links at the bottom.
-3. Commit, then tag and push: `git tag v0.1.0 && git push origin main v0.1.0`.
+3. Commit, then tag and push: `git tag v0.1.0 && git push origin master v0.1.0`.
 
 The workflow checks the tag matches `VERSION`, runs `rake`, then builds,
 pushes and attests the gem.
