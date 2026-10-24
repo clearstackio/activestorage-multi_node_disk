@@ -7,6 +7,14 @@ minor version may change public APIs; each entry says how.
 
 ## [Unreleased]
 
+### Fixed
+
+- The audit migration from `install --audit` now finishes a run that stopped
+  part way: each statement has its own guard (`table_exists?`,
+  `index_exists?`), so a table left without its index gets the index, and on
+  Oracle an empty table left without its sequence is dropped and recreated.
+  Hosts that already ran the migration need not change anything.
+
 ## [0.1.0] - 2026-10-20
 
 The first release.

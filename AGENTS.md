@@ -145,7 +145,9 @@ tool-specific instruction files (`CLAUDE.md`, Copilot or Cursor rules).
   - The payload column is `jsonb` on PostgreSQL, `json` on MySQL 8, and CLOB
     on Oracle.
   - Never index the JSON column. The only default index is on `created_at`.
-  - No adapter-specific SQL or JSON operators anywhere in the gem.
+  - No adapter-specific SQL or JSON operators anywhere in the gem. The one
+    exception is the audit migration's Oracle-only sequence probe
+    (`all_sequences`): Rails has no adapter-neutral way to ask.
 - **Naming:** every gem table shares one clear, configurable prefix
   (`c.table_name_prefix`, default `multi_node_disk_`:
   `active_storage_multi_node_disk_audits` would be 37 characters). Table, index and constraint names fit the
@@ -154,8 +156,9 @@ tool-specific instruction files (`CLAUDE.md`, Copilot or Cursor rules).
 - **Migrations come only from the install generator**
   (`rails g active_storage:multi_node_disk:install [--audit]`):
   - named after the gem
-  - reversible, and safe to re-run (`if_not_exists` or a `table_exists?`
-    guard)
+  - reversible, and safe to re-run after a partial run: every statement
+    has its own guard (`table_exists?`, `index_exists?`), and on Oracle an
+    empty table left without its sequence is dropped and recreated
   - never run automatically
   - the gem never touches a host database the host hasn't opted into
 

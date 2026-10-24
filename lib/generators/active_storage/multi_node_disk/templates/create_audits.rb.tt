@@ -1,19 +1,22 @@
 # The :table audit sink (activestorage-multi_node_disk): one row per entry,
 # the whole entry in payload. Runs on PostgreSQL (jsonb), MySQL 8 (json),
 # Oracle (CLOB) and SQLite (text); the model reads it with
-# `attribute :payload, :json`. Safe to run again; reversible.
+# `attribute :payload, :json`. Safe to run again (each statement has its
+# own guard: a run stopped after CREATE TABLE must still add the index);
+# reversible.
 class CreateActiveStorageMultiNodeDiskAudits < ActiveRecord::Migration<%= migration_version %>
   TABLE = :<%= table_name %>
   INDEX = "<%= index_name %>"
 
   def up
-    return if table_exists?(TABLE)
-
-    create_table TABLE do |t|
-      t.column :payload, payload_type, null: false
-      t.datetime :created_at, null: false
+    drop_table TABLE if table_without_sequence?(TABLE)
+    unless table_exists?(TABLE)
+      create_table TABLE do |t|
+        t.column :payload, payload_type, null: false
+        t.datetime :created_at, null: false
+      end
     end
-    add_index TABLE, :created_at, name: INDEX
+    add_index TABLE, :created_at, name: INDEX unless index_exists?(TABLE, :created_at, name: INDEX)
   end
 
   def down
@@ -21,6 +24,17 @@ class CreateActiveStorageMultiNodeDiskAudits < ActiveRecord::Migration<%= migrat
   end
 
   private
+
+  # Oracle creates the table, then its sequence, in two statements; a run
+  # stopped between them left an empty table nothing can insert into
+  # (ORA-02289). Raw SQL, Oracle only: Rails has no sequence probe. It reads
+  # the session's current schema, as table_exists? does (`schema:` setting).
+  def table_without_sequence?(table)
+    connection.adapter_name.match?(/oracle/i) && table_exists?(table) &&
+      select_value("SELECT COUNT(*) FROM all_sequences WHERE sequence_owner = SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA') " \
+        "AND sequence_name = #{quote(default_sequence_name(table.to_s, nil).upcase)}").to_i.zero? &&
+      select_value("SELECT COUNT(*) FROM #{table}").to_i.zero?
+  end
 
   # JSON where the database has a JSON type; a CLOB (text) elsewhere.
   def payload_type
