@@ -11,7 +11,7 @@ group :development, :test do
   gem "trilogy", "~> 2.9", require: false
   gem "rbs", "~> 4.0", require: false
   gem "rspec-rails", "~> 8.0"
-  gem "sqlite3", "~> 2.9"
+  gem "sqlite3", "~> 2.10"
   gem "standard", "~> 1.57", require: false
   gem "webmock", "~> 3.26"
 end
