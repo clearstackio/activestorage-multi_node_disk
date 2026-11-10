@@ -3,8 +3,8 @@
 require "rails_helper"
 
 RSpec.describe ActiveStorage::MultiNodeDisk do
-  it "is 0.1.0" do
-    expect(ActiveStorage::MultiNodeDisk::VERSION).to eq("0.1.0")
+  it "is 0.1.1" do
+    expect(ActiveStorage::MultiNodeDisk::VERSION).to eq("0.1.1")
   end
 
   it "builds the storage.yml service through Active Storage's Configurator" do

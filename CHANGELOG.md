@@ -7,6 +7,23 @@ minor version may change public APIs; each entry says how.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-10
+
+### Security
+
+- Development dependencies take their patched releases: Rails 8.1.4.1
+  (including Active Storage, for GHSA-f3w6-w445-fwh9), Rack 3.2.8, Nokogiri
+  1.19.7, Loofah 2.25.3, Crass 1.0.8, rails-html-sanitizer 1.7.2, Addressable
+  2.9.2, sqlite3 2.10.2 and Trilogy 2.13.3. The gem's runtime requirement
+  (`activestorage >= 8.1, < 9`) is unchanged; hosts should update Rails
+  themselves.
+
+### Changed
+
+- Development uses Ruby 4.0.9 and Bundler 4.0.24. CI pins
+  `ruby/setup-ruby` v1.338.0 and its PostgreSQL 17 and MySQL 8.0 service
+  images by digest.
+
 ### Fixed
 
 - The audit migration from `install --audit` now finishes a run that stopped
@@ -47,5 +64,6 @@ The first release.
 - `ActiveStorage::MultiNodeDisk::TestHelper`: fake nodes answered by the real
   endpoint in process.
 
-[Unreleased]: https://github.com/clearstackio/activestorage-multi_node_disk/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/clearstackio/activestorage-multi_node_disk/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/clearstackio/activestorage-multi_node_disk/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/clearstackio/activestorage-multi_node_disk/releases/tag/v0.1.0

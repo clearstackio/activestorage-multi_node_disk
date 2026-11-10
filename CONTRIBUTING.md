@@ -10,7 +10,7 @@ notice.
 
 ## Setup
 
-Tools are pinned in `mise.toml` (Ruby 4.0.7; the gem supports 3.3+).
+Tools are pinned in `mise.toml` (Ruby 4.0.9; the gem supports 3.3+).
 
 ```sh
 bin/setup           # mise install, bundle install, rake
@@ -75,7 +75,7 @@ publisher on rubygems.org (Profile → Trusted publishers): gem
    run `bundle install` so `Gemfile.lock` follows.
 2. Move the `[Unreleased]` entries in `CHANGELOG.md` under the new version
    and date, and update the compare links at the bottom.
-3. Commit, then tag and push: `git tag v0.1.0 && git push origin master v0.1.0`.
+3. Commit, then tag and push: `git tag vX.Y.Z && git push origin master vX.Y.Z`.
 
 The workflow checks the tag matches `VERSION`, runs `rake`, then builds,
 pushes and attests the gem.
