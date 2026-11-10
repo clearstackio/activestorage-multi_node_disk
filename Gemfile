@@ -10,7 +10,7 @@ group :development, :test do
   gem "pg", "~> 1.6", require: false
   gem "trilogy", "~> 2.9", require: false
   gem "rbs", "~> 4.0", require: false
-  gem "rspec-rails", "~> 8.0"
+  gem "rspec-rails", "~> 8.1"
   gem "sqlite3", "~> 2.9"
   gem "standard", "~> 1.57", require: false
   gem "webmock", "~> 3.26"
