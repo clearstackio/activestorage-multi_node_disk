@@ -10,7 +10,7 @@ notice.
 
 ## Setup
 
-Tools are pinned in `mise.toml` (Ruby 4.0.9; the gem supports 3.3+).
+Tools are pinned in `mise.toml` (Ruby 4.0.10; the gem supports 3.3+).
 
 ```sh
 bin/setup           # mise install, bundle install, rake
