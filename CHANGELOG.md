@@ -7,6 +7,18 @@ minor version may change public APIs; each entry says how.
 
 ## [Unreleased]
 
+### Security
+
+- The release workflow reads the repository only (`contents: read`) and
+  checks out with `persist-credentials: false`, so no token is left in
+  `.git/config`; the tag already exists, so nothing is pushed (EBA-20638).
+- Development uses Ruby 4.0.10 (Ruby's 2026-11-18 Regexp and String
+  advisories; EBA-20611). CI pins `ruby/setup-ruby` v1.342.0 and
+  `rubygems/release-gem` v1.4.2 (EBA-20638) and the PostgreSQL 17.12 service
+  image by digest (EBA-20660). Development
+  dependencies take their patch and minor releases (rspec-rails 8.1.0,
+  webmock 3.35.0, rack-test 2.3.0 and others; EBA-20638). The gem's runtime is unchanged.
+
 ## [0.1.1] - 2026-11-10
 
 ### Security
