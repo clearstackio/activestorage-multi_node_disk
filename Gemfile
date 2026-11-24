@@ -13,5 +13,5 @@ group :development, :test do
   gem "rspec-rails", "~> 8.0"
   gem "sqlite3", "~> 2.9"
   gem "standard", "~> 1.57", require: false
-  gem "webmock", "~> 3.26"
+  gem "webmock", "~> 3.37"
 end
